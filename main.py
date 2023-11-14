@@ -79,13 +79,20 @@ course_graph = CourseGraph()
 for course in courses:
     course_graph.add_course(course)
 
-# Add conflicts (This is an example. You'll need to add conflicts according to your specific situation)
+# Add conflicts (This is an example. You'll need to add conflicts according to your specific situation)                   #
+course_graph.add_conflict("Programming With Python", "Business Technology Management") #Morning vs morning
+course_graph.add_conflict("Programming With Python", "Infrastructure for Computing")   #Morning vs morning
+
+course_graph.add_conflict("Infrastructure for Computing", "Business Technology Management")   #Morning vs morning
+
 course_graph.add_conflict("Cybersecurity Management", "Data Analytics for Decision Making") #Afternoon vs afternoon
-course_graph.add_conflict("SQL Lab", "Data Analytics for Decision Making")                  #Afternoon vs afternoon
-course_graph.add_conflict("Data Analytics for Decision Making", "SQL Lab")                  #Afternoon vs afternoon
-# course_graph.add_conflict("Discrete Maths for Computing", "SQL Lab")                        #Test -> comment this line
-# course_graph.add_conflict("Data Analytics for Decision Making", "SQL Lab")                  #Test -> comment this line
-# course_graph.add_conflict("Data Analytics for Decision Making", "Infrastructure for Computing")     #Test -> comment this line
+course_graph.add_conflict("Cybersecurity Management", "SQL Lab") #Afternoon vs afternoon
+
+
+course_graph.add_conflict("Data Analytics for Decision Making", "SQL Lab") #Afternoon vs afternoon
+
+course_graph.add_conflict("Cloud Foundations", "Discrete Maths for Computing") #Afternoon vs afternoon
+course_graph.add_conflict("Discrete Maths for Computing", "Cloud Foundations") #Afternoon vs afternoon
 
 # Run the graph coloring algorithm to get the schedule
 course_colors = course_graph.welsh_powell_algorithm()

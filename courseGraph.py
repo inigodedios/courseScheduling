@@ -43,24 +43,6 @@ class CourseGraph:
         return result
 
 
-    # def welsh_powell_algorithm(self):
-    #     # Sort the courses based on the number of conflicts
-    #     sorted_courses = sorted(self.graph, key=lambda x: len(self.graph[x]), reverse=True)
-    #     result = {}  # To store the color assigned to each course
-    #     color = 0
-
-    #     for course in sorted_courses:
-    #         if course not in result:
-    #             # Assign a color to the course
-    #             result[course] = color
-    #             # Assign the same color to all the courses which do not conflict with this course
-    #             for neighbor in self.graph:
-    #                 if neighbor not in result and all(result.get(conflict) != color for conflict in self.graph[neighbor]):
-    #                     result[neighbor] = color
-    #             color += 1  # Increment color for next assignment
-
-    #     return result
-    
 
     def visualize_graph(self):
         # Create a networkx graph from the course graph
@@ -80,15 +62,18 @@ class CourseGraph:
         
         # Generate a color map
         color_map = plt.cm.get_cmap('viridis', max(node_colors) + 1)
-        
+
+        # Use spring layout for better spacing
+        pos = nx.spring_layout(G, k=1.5, iterations=50)  # Ajusta los valores de 'k' y 'iterations' según sea necesario
+
         # Draw the graph
         plt.figure(figsize=(12, 8))
-        nx.draw(G, with_labels=True, node_color=node_colors, cmap=color_map, edge_color='gray', node_size=2500, font_size=10)
+        nx.draw(G, pos, with_labels=True, node_color=node_colors, cmap=color_map, edge_color='gray', node_size=2500, font_size=10)
         plt.title("Course Conflict Graph")
         plt.show()
 
 
-    
+    # Without colors
     # def visualize_graph(self):
     #     # Create a networkx graph from the course graph
     #     G = nx.Graph()
@@ -102,9 +87,12 @@ class CourseGraph:
     #         for conflict in conflicts:
     #             G.add_edge(course, conflict)
         
+    #     # Use spring layout for better spacing
+    #     pos = nx.spring_layout(G, k=2.15, iterations=100)  # You can adjust 'k' and 'iterations' for different spacing
+        
     #     # Draw the graph
-    #     plt.figure(figsize=(12, 8))
-    #     nx.draw(G, with_labels=True, node_color='lightblue', edge_color='gray', node_size=2500, font_size=10)
+    #     plt.figure(figsize=(10, 8))
+    #     nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=2500, font_size=10)
     #     plt.title("Course Conflict Graph")
     #     plt.show()
 
