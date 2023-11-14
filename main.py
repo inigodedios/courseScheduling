@@ -57,7 +57,8 @@ courses = [
     "Data Analytics for Decision Making",
     "Discrete Maths for Computing",
     "Infrastructure for Computing",
-    "SQL Lab"
+    "SQL Lab",
+    "Data Structures and Algorithms",
 ]
 
 # Define the courses and their constraints -> Define the number of sessions for each course
@@ -69,7 +70,8 @@ course_sessions = {
     'Data Analytics for Decision Making': 15,
     'Discrete Maths for Computing': 15,
     'Infrastructure for Computing': 10,
-    'SQL Lab': 6
+    'SQL Lab': 6,
+    'Data Structures and Algorithms': 4,
 }
 
 
@@ -87,10 +89,16 @@ course_graph.add_conflict("Infrastructure for Computing", "Business Technology M
 
 course_graph.add_conflict("Cybersecurity Management", "Data Analytics for Decision Making") #Afternoon vs afternoon
 course_graph.add_conflict("Cybersecurity Management", "SQL Lab") #Afternoon vs afternoon
+course_graph.add_conflict("Cybersecurity Management", "Data Structures and Algorithms") #Afternoon vs afternoon
 
 course_graph.add_conflict("Data Analytics for Decision Making", "SQL Lab") #Afternoon vs afternoon
+course_graph.add_conflict("Data Analytics for Decision Making", "Data Structures and Algorithms") #Afternoon vs afternoon
+
+course_graph.add_conflict("SQL Lab", "Data Structures and Algorithms") #Afternoon vs afternoon
 
 course_graph.add_conflict("Cloud Foundations", "Discrete Maths for Computing") # Same professor and same time
+
+course_graph.add_conflict("Data Structures and Algorithms", "SQL Lab") # Same professor & afternoon vs afternoon
 
 # Run the graph coloring algorithm to get the schedule
 course_colors = course_graph.welsh_powell_algorithm()

@@ -17,7 +17,6 @@ class CourseGraph:
             self.graph[course1].append(course2)
             self.graph[course2].append(course1)
 
-
     def welsh_powell_algorithm(self):
         # Sort the courses based on the number of conflicts (descending order)
         sorted_courses = sorted(self.graph, key=lambda x: len(self.graph[x]), reverse=True)
@@ -40,10 +39,11 @@ class CourseGraph:
                 color += 1
 
         self.colors = result  # Make sure to assign the result to self.colors
+        print("Number of colors assigned:", color)
+        print("Colors assigned to courses:", result)
         return result
 
-
-
+    # With colors
     def visualize_graph(self):
         # Create a networkx graph from the course graph
         G = nx.Graph()
@@ -72,7 +72,6 @@ class CourseGraph:
         plt.title("Course Conflict Graph")
         plt.show()
 
-
     # Without colors
     # def visualize_graph(self):
     #     # Create a networkx graph from the course graph
@@ -95,4 +94,3 @@ class CourseGraph:
     #     nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=2500, font_size=10)
     #     plt.title("Course Conflict Graph")
     #     plt.show()
-

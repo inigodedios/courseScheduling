@@ -26,7 +26,8 @@ allowed_time_slots = {
     'Data Analytics for Decision Making': afternoon_slots.keys(),  # Afternoon only
     'Discrete Maths for Computing': morning_slots.keys() | afternoon_slots.keys(),  # All day
     'Infrastructure for Computing': morning_slots.keys(),  # Morning only
-    'SQL Lab': afternoon_slots.keys()  # Afternoon only
+    'SQL Lab': afternoon_slots.keys(),
+    'Data Structures and Algorithms' : afternoon_slots.keys()  # Afternoon only
 }
 
 spanish_holidays = [
@@ -54,7 +55,6 @@ class TrimesterSchedule:
             if (self.start_date + datetime.timedelta(days=i)).weekday() < 5 and  # Check if it's a weekday
             (self.start_date + datetime.timedelta(days=i)) not in spanish_holidays  # Check if it's not a holiday
         ]
-
 
 
     # TODO Here is the problem
