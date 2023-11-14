@@ -88,11 +88,9 @@ course_graph.add_conflict("Infrastructure for Computing", "Business Technology M
 course_graph.add_conflict("Cybersecurity Management", "Data Analytics for Decision Making") #Afternoon vs afternoon
 course_graph.add_conflict("Cybersecurity Management", "SQL Lab") #Afternoon vs afternoon
 
-
 course_graph.add_conflict("Data Analytics for Decision Making", "SQL Lab") #Afternoon vs afternoon
 
-course_graph.add_conflict("Cloud Foundations", "Discrete Maths for Computing") #Afternoon vs afternoon
-course_graph.add_conflict("Discrete Maths for Computing", "Cloud Foundations") #Afternoon vs afternoon
+course_graph.add_conflict("Cloud Foundations", "Discrete Maths for Computing") # Same professor and same time
 
 # Run the graph coloring algorithm to get the schedule
 course_colors = course_graph.welsh_powell_algorithm()
