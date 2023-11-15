@@ -37,9 +37,8 @@ spanish_holidays = [
     datetime.date(2023,12,6),     # Constitution Day
     datetime.date(2023, 12, 8),   # Immaculate Conception
 ]
-
 class TrimesterSchedule:
-    def __init__(self, start_date, end_date, max_courses_per_day=3):
+    def __init__(self, start_date, end_date, max_courses_per_day=2):
         self.start_date = start_date
         self.end_date = end_date
         self.max_courses_per_day = max_courses_per_day
@@ -88,9 +87,9 @@ class TrimesterSchedule:
                     break
 
             # Sort the day's schedule by time slot
-            schedule[date].sort(key=lambda x: x[1])
-            
+            schedule[date] = sorted(schedule[date], key=lambda x: datetime.datetime.strptime(x[1], '%I:%M %p'))
 
+        
         # Ensure all courses have been scheduled the correct number of times
         for course, count in course_occurrences.items():
             if count < course_sessions[course]:
