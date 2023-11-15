@@ -69,18 +69,14 @@ class CourseGraph:
         norm = mcolors.Normalize(vmin=0, vmax=max(self.colors.values()))
 
         fig, ax = plt.subplots()
+        fig.canvas.manager.set_window_title('Course Conflict Graph')
         plt.subplots_adjust(bottom=0.2)
 
         def update_graph(index):
             ax.clear()
-            if index == -1:
-                # Draw graph without colors
-                node_colors = ['lightgrey' for node in G.nodes()]
-            else:
-                # Draw graph with colors up to the current index
-                node_colors = [color_map(norm(self.colors.get(node, 0))) if self.colors.get(node) <= index else 'lightgrey' for node in G.nodes()]
-            
-            nx.draw(G, pos, ax=ax, with_labels=True, node_color=node_colors, edge_color='gray', node_size=2500, font_weight='bold')
+            ax.set_title(f"Course Conflict Graph - Step {index + 1}" if index >= 0 else "Course Conflict Graph - No Color", fontweight='bold')
+            node_colors = [color_map(norm(self.colors.get(node, 0))) if self.colors.get(node) <= index else 'lightgrey' for node in G.nodes()]
+            nx.draw(G, pos, ax=ax, with_labels=True, node_color=node_colors, edge_color='gray', node_size=2500, font_size=12, font_color='black')
             fig.canvas.draw_idle()
 
 
@@ -112,6 +108,7 @@ class CourseGraph:
         bprev = Button(axprev, 'Prev')
         bprev.on_clicked(tracker.prev)
 
+        
         plt.show()
       
 
