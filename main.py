@@ -32,12 +32,6 @@ Other Relevant Information:
 - Course Enrollment: If a student is enrolled in two courses, those courses cannot be scheduled at the same time.
 
 Final goal: get a optimun shcedule for the all trismester
-
-IMPORTANT
-- The schedule should not mix morning and afternoon classes on the same day. It seems your output respects this rule
-- There are many days, especially towards the end of the trimester, where no classes are scheduled at all.
-- Handling Gaps and Unused Days: You've noted that there are many days, especially towards the end of the trimester, with no classes scheduled. This could be due to the random nature of the scheduling or constraints that are too tight. You might need to adjust the algorithm to distribute classes more evenly throughout the trimester.
-- Validation: After scheduling, it's essential to validate the schedule to ensure that all constraints are met and that each course is scheduled for the required number of sessions.
 """
 
 import datetime

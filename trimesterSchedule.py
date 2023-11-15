@@ -16,7 +16,6 @@ afternoon_slots = {
 # Combine morning and afternoon slots into one dictionary
 time_slots = {**morning_slots, **afternoon_slots}
 
-
 # Define a mapping from courses to their allowed time slots based on their time-of-day restrictions
 allowed_time_slots = {
     'Programming With Python': morning_slots.keys() | afternoon_slots.keys(),  # All day
@@ -56,16 +55,6 @@ class TrimesterSchedule:
             (self.start_date + datetime.timedelta(days=i)) not in spanish_holidays  # Check if it's not a holiday
         ]
 
-
-    # TODO Here is the problem
-    # TODO ncorporate the colors assigned by the Welsh-Powell algorithm into the TrimesterSchedule class's schedule_courses method, you need to use the color information to guide the scheduling process.
-    """
-    he issue with the algorithm not fulfilling the requirement for the number of sessions for each course could be due to several factors, including:
-    - Insufficient Dates: There may not be enough available dates to schedule all sessions, especially if the randomization leads to some dates being underutilized.
-    - Randomization Over Constraints: The random choice of morning or afternoon might be too restrictive, leading to some sessions not being scheduled because their allowed time slots don't match the randomly chosen part of the day.
-    - Inefficient Scheduling: The algorithm may not be efficiently filling available slots on each day, especially if it stops scheduling as soon as the maximum number of courses per day is reached, without considering whether all courses have met their session requirements."""
-    # METHOD IN WHICH If there are courses not assigned and there are dates with no classes scheduled, the classes are reassigned
-    # Requirement that each day should have either one or two classes in the morning or one or two classes in the afternoon, with a minimum of two and a maximum of three classes per day, we need to adjust the scheduling algorithm accordingly.
     def schedule_courses(self, course_colors, course_sessions, allowed_time_slots):
         schedule = {date: [] for date in self.dates}
         course_occurrences = {course: 0 for course in course_colors.keys()}

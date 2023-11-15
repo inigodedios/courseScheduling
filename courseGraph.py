@@ -50,27 +50,41 @@ class CourseGraph:
 
     # Visualization method updated with buttons for interactivity
     def visualize_graph(self):
+    
+        # Create an undirected graph using the NetworkX library
         G = nx.Graph()
+
+        # Add nodes to the graph to represent each course
         for course in self.courses:
             G.add_node(course)
+
+        # Add edges to the graph to represent conflicts between courses
         for course, conflicts in self.graph.items():
             for conflict in conflicts:
                 G.add_edge(course, conflict)
 
+        # Calculate the layout of nodes using the spring_layout algorithm from NetworkX
         pos = nx.spring_layout(G, k=1.5, iterations=50)
+
+        # Color configuration for nodes based on the color assignment of courses
         color_map = plt.cm.get_cmap('viridis', max(self.colors.values()) + 1)
         norm = mcolors.Normalize(vmin=0, vmax=max(self.colors.values()))
 
+        # Create a figure and axes for visualization
         fig, ax = plt.subplots(figsize=(14, 8))
         fig.canvas.manager.set_window_title('Course Conflict Graph')
         fig.tight_layout()
         plt.subplots_adjust(bottom=0.2)
-        
 
+        # Function to update the graph visualization at each step
         def update_graph(index):
             ax.clear()
-            ax.set_title(f"Course Conflict Graph - Step {index + 1}" if index >= 0 else "Course Conflict Graph - No Color", fontweight='bold', pad=3) 
+            ax.set_title(f"Course Conflict Graph - Step {index + 1}" if index >= 0 else "Course Conflict Graph - No Color", fontweight='bold', pad=3)
+            
+            # Assign colors to nodes based on the current step
             node_colors = [color_map(norm(self.colors.get(node, 0))) if self.colors.get(node) <= index else 'lightgrey' for node in G.nodes()]
+            
+            # Draw the graph with node labels, colors, and other attributes
             nx.draw(G, pos, ax=ax, with_labels=True, node_color=node_colors, edge_color='gray', node_size=2500, font_size=12, font_color='black')
             fig.canvas.draw_idle()
 
