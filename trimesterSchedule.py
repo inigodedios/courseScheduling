@@ -100,6 +100,7 @@ class TrimesterSchedule:
 
             # Sort the day's schedule by time slot
             schedule[date].sort(key=lambda x: x[1])
+            
 
         # Ensure all courses have been scheduled the correct number of times
         for course, count in course_occurrences.items():

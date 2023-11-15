@@ -8,6 +8,7 @@ General Constraints:
 - Subjects will not be repeated on the same day.
 - The trimester begins on September 18, 2023, and concludes on December 19, 2023. 
 - We have to respect the Spanish national holidays and we do not have class on weekends.
+- Each teacher can only teach one class per day
 
 Scheduling Constraints:
 - Morning classes start at 9:00 AM.
@@ -121,3 +122,5 @@ for date, day_schedule in full_schedule.items():
 
 # Creating the graph
 course_graph.visualize_graph()
+# course_graph.visualize_graph_without_colors()
+# course_graph.visualize_graph_with_colors()
