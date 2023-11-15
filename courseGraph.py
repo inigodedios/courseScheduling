@@ -7,6 +7,9 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
 
+
+
+
 class CourseGraph:
     def __init__(self):
         self.graph = {}  # To store graph: course -> list of conflicts
@@ -49,45 +52,111 @@ class CourseGraph:
         return result
 
 
-# ---------------------------- VISUALIZATION ----------------------------
-    # Without colors + with colors -> animation
+
+
+
+    # Visualization method updated with buttons for interactivity
     def visualize_graph(self):
         G = nx.Graph()
-        
-        # Añade nodos y aristas al grafo G
         for course in self.courses:
             G.add_node(course)
         for course, conflicts in self.graph.items():
             for conflict in conflicts:
                 G.add_edge(course, conflict)
-        
+
         pos = nx.spring_layout(G, k=1.5, iterations=50)
-
-        # Prepara la figura
-        plt.figure(figsize=(12, 8))
-        plt.title("Course Conflict Graph")
-
-        # Dibuja el grafo sin colores primero
-        nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=2500, font_weight='bold')
-        plt.pause(5)  # Pausa de 2 segundos
-
-        # Dibuja el grafo con colores
         color_map = plt.cm.get_cmap('viridis', max(self.colors.values()) + 1)
         norm = mcolors.Normalize(vmin=0, vmax=max(self.colors.values()))
 
-        for color in range(max(self.colors.values()) + 1):
-            # Define los colores de los nodos en este paso
-            node_colors = [color_map(norm(self.colors[node])) if self.colors[node] <= color else 'lightblue' for node in G.nodes()]
+        fig, ax = plt.subplots()
+        plt.subplots_adjust(bottom=0.2)
 
-            # Actualiza la figura
-            plt.clf()
-            plt.title(f"Course Conflict Graph - Coloring Step {color+1}")
-            nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', node_size=2500, font_weight='bold')
-            plt.pause(1)  # Pausa para ver la transición
+        def update_graph(index):
+            ax.clear()
+            if index == -1:
+                # Draw graph without colors
+                node_colors = ['lightgrey' for node in G.nodes()]
+            else:
+                # Draw graph with colors up to the current index
+                node_colors = [color_map(norm(self.colors.get(node, 0))) if self.colors.get(node) <= index else 'lightgrey' for node in G.nodes()]
+            
+            nx.draw(G, pos, ax=ax, with_labels=True, node_color=node_colors, edge_color='gray', node_size=2500, font_weight='bold')
+            fig.canvas.draw_idle()
+
+
+        # Initial drawing of the graph without colors
+        update_graph(-1)
+
+        class IndexTracker(object):
+            def __init__(self, course_graph):
+                self.index = -1  # Start from -1 to represent the uncolored state
+                self.course_graph = course_graph
+
+            def next(self, event):
+                if self.index < max(self.course_graph.colors.values()):
+                    self.index += 1
+                update_graph(self.index)
+
+            def prev(self, event):
+                if self.index > -1:  # Allows the index to go back to the uncolored state
+                    self.index -= 1
+                update_graph(self.index)
+
+        # Buttons callback functions
+        tracker = IndexTracker(self) 
+
+        axprev = plt.axes([0.7, 0.05, 0.1, 0.075])
+        axnext = plt.axes([0.81, 0.05, 0.1, 0.075])
+        bnext = Button(axnext, 'Next')
+        bnext.on_clicked(tracker.next)
+        bprev = Button(axprev, 'Prev')
+        bprev.on_clicked(tracker.prev)
 
         plt.show()
+      
 
 
+
+
+# ---------------------------- VISUALIZATION ----------------------------
+    # Without colors + with colors -> animation
+    # def visualize_graph(self):
+        # G = nx.Graph()
+        
+        # # Añade nodos y aristas al grafo G
+        # for course in self.courses:
+        #     G.add_node(course)
+        # for course, conflicts in self.graph.items():
+        #     for conflict in conflicts:
+        #         G.add_edge(course, conflict)
+        
+        # pos = nx.spring_layout(G, k=1.5, iterations=50)
+
+        # # Prepara la figura
+        # plt.figure(figsize=(12, 8))
+        # plt.title("Course Conflict Graph")
+
+        # # Dibuja el grafo sin colores primero
+        # nx.draw(G, pos, with_labels=True, node_color='lightblue', edge_color='gray', node_size=2500, font_weight='bold')
+        # plt.pause(5)  # Pausa de 2 segundos
+
+        # # Dibuja el grafo con colores
+        # color_map = plt.cm.get_cmap('viridis', max(self.colors.values()) + 1)
+        # norm = mcolors.Normalize(vmin=0, vmax=max(self.colors.values()))
+
+        # for color in range(max(self.colors.values()) + 1):
+        #     # Define los colores de los nodos en este paso
+        #     node_colors = [color_map(norm(self.colors[node])) if self.colors[node] <= color else 'lightblue' for node in G.nodes()]
+
+        #     # Actualiza la figura
+        #     plt.clf()
+        #     plt.title(f"Course Conflict Graph - Coloring Step {color+1}")
+        #     nx.draw(G, pos, with_labels=True, node_color=node_colors, edge_color='gray', node_size=2500, font_weight='bold')
+        #     plt.pause(1)  # Pausa para ver la transición
+
+        # plt.show()
+
+# ---------------------------- INDIVIDUAL VISUALIZATION ----------------------------
     # With colors
     def visualize_graph_with_colors(self):
         # Create a networkx graph from the course graph

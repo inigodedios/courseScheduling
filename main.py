@@ -40,9 +40,6 @@ IMPORTANT
 - Validation: After scheduling, it's essential to validate the schedule to ensure that all constraints are met and that each course is scheduled for the required number of sessions.
 """
 # TODO Would be great if we can explain how depending on the input, we skew the algorithm, and therefore the schedule
-
-
-
 import datetime
 
 from courseGraph import CourseGraph
