@@ -7,9 +7,6 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import Button
 
 
-
-
-
 class CourseGraph:
     def __init__(self):
         self.graph = {}  # To store graph: course -> list of conflicts
@@ -51,10 +48,6 @@ class CourseGraph:
         print("Colors assigned to courses:", result)
         return result
 
-
-
-
-
     # Visualization method updated with buttons for interactivity
     def visualize_graph(self):
         G = nx.Graph()
@@ -68,17 +61,18 @@ class CourseGraph:
         color_map = plt.cm.get_cmap('viridis', max(self.colors.values()) + 1)
         norm = mcolors.Normalize(vmin=0, vmax=max(self.colors.values()))
 
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(14, 8))
         fig.canvas.manager.set_window_title('Course Conflict Graph')
+        fig.tight_layout()
         plt.subplots_adjust(bottom=0.2)
+        
 
         def update_graph(index):
             ax.clear()
-            ax.set_title(f"Course Conflict Graph - Step {index + 1}" if index >= 0 else "Course Conflict Graph - No Color", fontweight='bold')
+            ax.set_title(f"Course Conflict Graph - Step {index + 1}" if index >= 0 else "Course Conflict Graph - No Color", fontweight='bold', pad=3) 
             node_colors = [color_map(norm(self.colors.get(node, 0))) if self.colors.get(node) <= index else 'lightgrey' for node in G.nodes()]
             nx.draw(G, pos, ax=ax, with_labels=True, node_color=node_colors, edge_color='gray', node_size=2500, font_size=12, font_color='black')
             fig.canvas.draw_idle()
-
 
         # Initial drawing of the graph without colors
         update_graph(-1)
@@ -100,20 +94,15 @@ class CourseGraph:
 
         # Buttons callback functions
         tracker = IndexTracker(self) 
-
         axprev = plt.axes([0.7, 0.05, 0.1, 0.075])
         axnext = plt.axes([0.81, 0.05, 0.1, 0.075])
         bnext = Button(axnext, 'Next')
         bnext.on_clicked(tracker.next)
         bprev = Button(axprev, 'Prev')
         bprev.on_clicked(tracker.prev)
-
         
         plt.show()
       
-
-
-
 
 # ---------------------------- VISUALIZATION ----------------------------
     # Without colors + with colors -> animation

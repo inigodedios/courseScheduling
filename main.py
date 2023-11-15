@@ -39,9 +39,8 @@ IMPORTANT
 - Handling Gaps and Unused Days: You've noted that there are many days, especially towards the end of the trimester, with no classes scheduled. This could be due to the random nature of the scheduling or constraints that are too tight. You might need to adjust the algorithm to distribute classes more evenly throughout the trimester.
 - Validation: After scheduling, it's essential to validate the schedule to ensure that all constraints are met and that each course is scheduled for the required number of sessions.
 """
-# TODO Would be great if we can explain how depending on the input, we skew the algorithm, and therefore the schedule
-import datetime
 
+import datetime
 from courseGraph import CourseGraph
 from trimesterSchedule import TrimesterSchedule
 from trimesterSchedule import allowed_time_slots
@@ -71,7 +70,6 @@ course_sessions = {
     'SQL Lab': 6,
     'Data Structures and Algorithms': 4,
 }
-
 
 # Create the conflict graph for courses
 course_graph = CourseGraph()
@@ -106,18 +104,15 @@ start_date = datetime.date(2023, 9, 18)
 end_date = datetime.date(2023, 12, 19)
 max_courses_per_day = 2
 
-
 # Create the trimester schedule with time-of-day constraints
 trimester_schedule = TrimesterSchedule(start_date, end_date, max_courses_per_day)
 full_schedule = trimester_schedule.schedule_courses(course_colors, course_sessions, allowed_time_slots)
-
-
 
 # Output the schedule
 for date, day_schedule in full_schedule.items():
     print(date.strftime('%Y-%m-%d'), day_schedule)
 
-# Creating the graph
+# Visualize the graph
 course_graph.visualize_graph()
 # course_graph.visualize_graph_without_colors()
 # course_graph.visualize_graph_with_colors()
