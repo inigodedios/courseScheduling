@@ -57,10 +57,10 @@ class TrimesterSchedule:
         schedule = {date: [] for date in self.dates}
         course_occurrences = {course: 0 for course in course_colors.keys()}
 
-        # Nuevo: Guardar los colores ya programados para cada día
+        # Save the colors already programmed for each day
         colors_scheduled_per_day = {date: set() for date in self.dates}
 
-        # Iterar a través de cada fecha en el trimestre
+        # Iterate through each date in the quarter
         for date in self.dates:
             morning = random.choice([True, False])
             slots_today = list(morning_slots.keys()) if morning else list(afternoon_slots.keys())
@@ -72,7 +72,7 @@ class TrimesterSchedule:
                 if course_occurrences[course] < course_sessions[course]:
                     course_color = course_colors[course]
 
-                    # Verificar si el color del curso ya está programado para este día
+                    # Check if the color of the course is already scheduled for this day
                     if course_color not in colors_scheduled_per_day[date]:
                         for slot in allowed_time_slots[course]:
                             if slot in slots_today:
@@ -81,7 +81,7 @@ class TrimesterSchedule:
                                 course_occurrences[course] += 1
                                 slots_today.remove(slot)
 
-                                # Agregar el color del curso a los colores programados para este día
+                                # Add the course color to the colors programmed for this day.
                                 colors_scheduled_per_day[date].add(course_color)
                                 break
 
@@ -90,7 +90,7 @@ class TrimesterSchedule:
 
             schedule[date] = sorted(schedule[date], key=lambda x: datetime.datetime.strptime(x[1], '%I:%M %p'))
 
-        # Verificar que todos los cursos hayan sido programados el número correcto de veces
+        # Verify that all courses have been scheduled the correct number of times
         for course, count in course_occurrences.items():
             if count < course_sessions[course]:
                 print(f"Warning: {course} has only been scheduled {count} times, but needs {course_sessions[course]} sessions.")
