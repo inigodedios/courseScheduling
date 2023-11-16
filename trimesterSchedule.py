@@ -53,44 +53,44 @@ class TrimesterSchedule:
             if (self.start_date + datetime.timedelta(days=i)).weekday() < 5 and  # Check if it's a weekday
             (self.start_date + datetime.timedelta(days=i)) not in spanish_holidays  # Check if it's not a holiday
         ]
-
     def schedule_courses(self, course_colors, course_sessions, allowed_time_slots):
         schedule = {date: [] for date in self.dates}
         course_occurrences = {course: 0 for course in course_colors.keys()}
 
-        # Iterate through each date in the trimester
+        # Nuevo: Guardar los colores ya programados para cada día
+        colors_scheduled_per_day = {date: set() for date in self.dates}
+
+        # Iterar a través de cada fecha en el trimestre
         for date in self.dates:
-            # Randomly decide to schedule morning or afternoon classes for the day
             morning = random.choice([True, False])
             slots_today = list(morning_slots.keys()) if morning else list(afternoon_slots.keys())
 
-            # Shuffle the courses to avoid bias in scheduling
             courses_today = list(course_colors.keys())
             random.shuffle(courses_today)
 
-            # Attempt to schedule each course
             for course in courses_today:
-                # Check if we still need to schedule more sessions for this course
                 if course_occurrences[course] < course_sessions[course]:
-                    # Check if the course can be scheduled today based on its allowed time slots
-                    for slot in allowed_time_slots[course]:
-                        if slot in slots_today:
-                            time_slot = time_slots[slot]
-                            # Schedule the class
-                            schedule[date].append((course, time_slot))
-                            course_occurrences[course] += 1
-                            slots_today.remove(slot)
-                            break
+                    course_color = course_colors[course]
 
-                # Check if we have scheduled enough classes for the day
+                    # Verificar si el color del curso ya está programado para este día
+                    if course_color not in colors_scheduled_per_day[date]:
+                        for slot in allowed_time_slots[course]:
+                            if slot in slots_today:
+                                time_slot = time_slots[slot]
+                                schedule[date].append((course, time_slot))
+                                course_occurrences[course] += 1
+                                slots_today.remove(slot)
+
+                                # Agregar el color del curso a los colores programados para este día
+                                colors_scheduled_per_day[date].add(course_color)
+                                break
+
                 if len(schedule[date]) >= self.max_courses_per_day or not slots_today:
                     break
 
-            # Sort the day's schedule by time slot
             schedule[date] = sorted(schedule[date], key=lambda x: datetime.datetime.strptime(x[1], '%I:%M %p'))
 
-        
-        # Ensure all courses have been scheduled the correct number of times
+        # Verificar que todos los cursos hayan sido programados el número correcto de veces
         for course, count in course_occurrences.items():
             if count < course_sessions[course]:
                 print(f"Warning: {course} has only been scheduled {count} times, but needs {course_sessions[course]} sessions.")

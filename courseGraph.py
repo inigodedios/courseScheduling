@@ -44,7 +44,7 @@ class CourseGraph:
                 color += 1
 
         self.colors = result  # Make sure to assign the result to self.colors
-        print("Number of colors assigned:", color)
+        print("Chromatic number:", color)
         print("Colors assigned to courses:", result)
         return result
 
